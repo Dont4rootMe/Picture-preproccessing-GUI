@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 pyqt6 = "*"
 pyqt6-tools = "*"
+pillow = "*"
+numpy = "*"
+opencv-python = "*"
 
 [dev-packages]
 
