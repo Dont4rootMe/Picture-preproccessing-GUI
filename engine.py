@@ -5,11 +5,19 @@ import cv2 as cv
 
 
 class Engine:
+    def reset(self):
+        self.__whipe_dict()
+        for upl in self.upload_actions:
+            upl()
+
+    def refresh(self):
+        for refr in self.refresh_actions:
+            refr()
+
     def __refresher__(func):
         def inner(self, *args, **kwargs):
             func(self, *args, **kwargs)
-            for refr in self.refresh:
-                refr()
+            self.refresh()
         return inner
 
     def __whipe_dict(self):
@@ -27,16 +35,17 @@ class Engine:
 
     def __init__(self):
         self.img = None
-        self.refresh = []
-        self.upload = []
+        self.modified = None
+        self.refresh_actions = []
+        self.upload_actions = []
 
         self.__whipe_dict()
 
     def on_change(self, func):
-        self.refresh.append(func)
+        self.refresh_actions.append(func)
 
     def on_upload(self, func):
-        self.upload.append(func)
+        self.upload_actions.append(func)
 
     def pixmap_exist(self):
         return self.img is not None
@@ -84,15 +93,17 @@ class Engine:
                 Matrix, cv.MORPH_CLOSE, self.actions['closing'])
             temp = Image.fromarray(temp.astype(np.uint8))
 
+        self.modified = temp
         return QPixmap.fromImage(ImageQt.ImageQt(temp))
 
     def upload_picture(self, path):
         self.img = Image.open(path)
         self.pixmap = QPixmap(path)
 
-        self.__whipe_dict()
-        for upl in self.upload:
-            upl()
+        self.reset()
+
+    def save_picture(self, path):
+        self.modified.save(path)
 
     @__refresher__
     def change_brightness(self, brightness):

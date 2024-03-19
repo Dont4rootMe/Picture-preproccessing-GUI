@@ -12,7 +12,7 @@ class ImageBox(QLabel):
         self.engine.on_upload(self.refresh_pic)
 
         if not self.engine.pixmap_exist():
-            self.pixels = QPixmap('default_photo.png')
+            self.pixels = QPixmap('images/app_images/default_photo.png')
 
         self.setPixmap(self.pixels)
         self.setScaledContents(True)
