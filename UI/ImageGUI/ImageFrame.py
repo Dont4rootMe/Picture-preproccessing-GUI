@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFileDialog, QPushButton
 from PyQt6.QtGui import QPixmap
 
-from UI.images.ImageBox import ImageBox
+from UI.ImageGUI.ImageBox import ImageBox
 
 
 class ImageFrame(QWidget):

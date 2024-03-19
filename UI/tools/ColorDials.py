@@ -9,6 +9,7 @@ class ColorDials(QWidget):
             super().__init__(topWidget)
 
             layout = QVBoxLayout()
+            layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
             self.setLayout(layout)
 
             self.dial = QDial(self)
