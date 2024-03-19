@@ -14,13 +14,16 @@ CLICKED_BUTTON_STYLE = '''
 
 class CVtools(QWidget):
     class __erosion_tool(QWidget):
+        def _no_style(self):
+            self.btnNone.setStyleSheet(None)
+            self.btn33.setStyleSheet(None)
+            self.btn55.setStyleSheet(None)
+            self.btn77.setStyleSheet(None)
+            self.btn99.setStyleSheet(None)
+
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
-                self.btnNone.setStyleSheet(None)
-                self.btn33.setStyleSheet(None)
-                self.btn55.setStyleSheet(None)
-                self.btn77.setStyleSheet(None)
-                self.btn99.setStyleSheet(None)
+                self._no_style()
                 func(self, *args, **kwargs)
             return inner
 
@@ -77,13 +80,16 @@ class CVtools(QWidget):
             self.engine.erosion_change((15, 15))
 
     class __dilation_tool(QWidget):
+        def _no_style(self):
+            self.btnNone.setStyleSheet(None)
+            self.btn33.setStyleSheet(None)
+            self.btn55.setStyleSheet(None)
+            self.btn77.setStyleSheet(None)
+            self.btn99.setStyleSheet(None)
+
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
-                self.btnNone.setStyleSheet(None)
-                self.btn33.setStyleSheet(None)
-                self.btn55.setStyleSheet(None)
-                self.btn77.setStyleSheet(None)
-                self.btn99.setStyleSheet(None)
+                self._no_style()
                 func(self, *args, **kwargs)
             return inner
 
@@ -157,13 +163,16 @@ class CVtools(QWidget):
             self.func(checked)
 
     class __opening_tool(QWidget):
+        def _no_style(self):
+            self.btnNone.setStyleSheet(None)
+            self.btn33.setStyleSheet(None)
+            self.btn55.setStyleSheet(None)
+            self.btn77.setStyleSheet(None)
+            self.btn99.setStyleSheet(None)
+
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
-                self.btnNone.setStyleSheet(None)
-                self.btn33.setStyleSheet(None)
-                self.btn55.setStyleSheet(None)
-                self.btn77.setStyleSheet(None)
-                self.btn99.setStyleSheet(None)
+                self._no_style()
                 func(self, *args, **kwargs)
             return inner
 
@@ -220,13 +229,16 @@ class CVtools(QWidget):
             self.engine.opening_change((15, 15))
 
     class __closing_tool(QWidget):
+        def _no_style(self):
+            self.btnNone.setStyleSheet(None)
+            self.btn33.setStyleSheet(None)
+            self.btn55.setStyleSheet(None)
+            self.btn77.setStyleSheet(None)
+            self.btn99.setStyleSheet(None)
+
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
-                self.btnNone.setStyleSheet(None)
-                self.btn33.setStyleSheet(None)
-                self.btn55.setStyleSheet(None)
-                self.btn77.setStyleSheet(None)
-                self.btn99.setStyleSheet(None)
+                self._no_style()
                 func(self, *args, **kwargs)
             return inner
 
@@ -286,14 +298,27 @@ class CVtools(QWidget):
         super().__init__(topModel)
         self.engine = engine
 
-        self.layout = QFormLayout()
-        self.layout.addRow(
-            'Erosion: ', self.__erosion_tool(self, self.engine))
-        self.layout.addRow(
-            'Dilation: ', self.__dilation_tool(self, self.engine))
-        self.layout.addRow(
-            'Opening: ', self.__opening_tool(self, self.engine))
-        self.layout.addRow(
-            'Closing: ', self.__closing_tool(self, self.engine))
+        self.erosion_tool = self.__erosion_tool(self, self.engine)
+        self.dilation_tool = self.__dilation_tool(self, self.engine)
+        self.opening_tool = self.__opening_tool(self, self.engine)
+        self.closing_tool = self.__closing_tool(self, self.engine)
 
+        self.layout = QFormLayout()
+        self.layout.addRow('Erosion: ', self.erosion_tool)
+        self.layout.addRow('Dilation: ', self.dilation_tool)
+        self.layout.addRow('Opening: ', self.opening_tool)
+        self.layout.addRow('Closing: ', self.closing_tool)
+
+        self.engine.on_upload(self.clear_styles)
         self.setLayout(self.layout)
+
+    def clear_styles(self):
+        self.erosion_tool._no_style()
+        self.dilation_tool._no_style()
+        self.opening_tool._no_style()
+        self.closing_tool._no_style()
+
+        self.erosion_tool.btnNone_click(None)
+        self.dilation_tool.btnNone_click(None)
+        self.opening_tool.btnNone_click(None)
+        self.closing_tool.btnNone_click(None)

@@ -11,6 +11,7 @@ class Engine:
             upl()
 
     def refresh(self):
+        print('refresh')
         for refr in self.refresh_actions:
             refr()
 

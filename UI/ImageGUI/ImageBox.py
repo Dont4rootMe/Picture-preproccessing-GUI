@@ -7,6 +7,7 @@ class ImageBox(QLabel):
     def __init__(self, topWidget, engine):
         super().__init__(topWidget)
         self.engine = engine
+        self.engine.on_upload(self.refresh_pic)
         self.engine.on_change(self.refresh_pic)
 
         if not self.engine.pixmap_exist():
@@ -18,7 +19,6 @@ class ImageBox(QLabel):
         self.setMinimumSize(QSize(100, 100))
 
     def refresh_pic(self):
-        print('12321312')
         if self.engine.pixmap_exist():
             self.setPixmap(self.engine.get_pixmap())
 

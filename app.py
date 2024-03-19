@@ -31,12 +31,11 @@ class MainFrame(QWidget):
             if self.engine.pixmap_exist():
                 path = QFileDialog.getSaveFileName(
                     self, 'Save File', "pic (*.png)")[0]
-                self.engine.save_picture(path)
-                # if len(path) != 0:
-                #     try:
-                #         self.engine.save_picture(path)
-                #     except:
-                #         print('some thing went terribly wrong on the saving')
+                if len(path) != 0:
+                    try:
+                        self.engine.save_picture(path)
+                    except:
+                        print('some thing went terribly wrong on the saving')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
