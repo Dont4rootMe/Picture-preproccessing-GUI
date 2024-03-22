@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QToolBox, QWidget, QHBoxLayout, QLabel, QVBoxLayout
 from UI.tools.ColorDials import ColorDials
 from UI.tools.CVtools import CVtools
 from UI.tools.DefaultPalette import DefaultPalette
+from UI.tools.CountObjects import CountObjects
 
 
 class ToolsPaletes(QWidget):
@@ -13,8 +14,9 @@ class ToolsPaletes(QWidget):
         layout = QVBoxLayout()
         tlbx = QToolBox()
 
-        tlbx.addItem(ColorDials(self, engine), 'Палитра цветов')
-        tlbx.addItem(CVtools(self, engine), 'средства OpenCV')
+        tlbx.addItem(ColorDials(self, engine), 'Точечные операции')
+        tlbx.addItem(CVtools(self, engine), 'Морфологические операции')
+        tlbx.addItem(CountObjects(self, engine), 'Подсчет объектов')
         tlbx.addItem(DefaultPalette(self, engine), 'demo изображения')
 
         layout.addWidget(tlbx)

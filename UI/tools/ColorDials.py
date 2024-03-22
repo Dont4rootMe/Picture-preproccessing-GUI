@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDial, QWidget, QHBoxLayout, QLabel, QVBoxLayout, QFormLayout, QSlider
+from PyQt6.QtWidgets import QDial, QWidget, QCheckBox, QHBoxLayout, QLabel, QVBoxLayout, QFormLayout, QSlider
 from PyQt6.QtCore import QSize
 from PyQt6.QtCore import Qt
 
@@ -71,12 +71,36 @@ class ColorDials(QWidget):
         self.blue_slider.valueChanged.connect(self.engine.enhance_blue)
         self.layout_enhancers.addRow('blue:', self.blue_slider)
 
+        self.layout_binarize = QHBoxLayout()
+        self.use_binarize = QCheckBox('Binarize: ')
+        self.use_binarize.stateChanged.connect(self.checkbox_binarize)
+        self.layout_binarize.addWidget(self.use_binarize)
+
+        self.binarize_slider = QSlider(Qt.Orientation.Horizontal)
+        self.binarize_slider.setDisabled(True)
+        self.binarize_slider.setRange(1, 255)
+        self.binarize_slider.setValue(128)
+        self.binarize_slider.setFixedSize(QSize(200, 30))
+        self.binarize_slider.valueChanged.connect(self.engine.binarize)
+
+        self.layout_binarize.addWidget(self.binarize_slider)
+
         self.layout = QVBoxLayout()
         self.layout.addItem(self.layout_dials)
         self.layout.addItem(self.layout_enhancers)
+        self.layout.addItem(self.layout_binarize)
         self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setLayout(self.layout)
+
         engine.on_upload(self.clear_dials)
+
+    def checkbox_binarize(self, value):
+        if value == 0:
+            self.binarize_slider.setDisabled(True)
+            self.engine.binarize(None)
+        else:
+            self.binarize_slider.setDisabled(False)
+            self.engine.binarize(self.binarize_slider.value())
 
     def clear_dials(self):
         self.brightness.clear()
@@ -87,3 +111,6 @@ class ColorDials(QWidget):
         self.red_slider.setValue(200)
         self.green_slider.setValue(200)
         self.blue_slider.setValue(200)
+
+        self.use_binarize.setChecked(False)
+        self.binarize_slider.setValue(128)

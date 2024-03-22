@@ -8,6 +8,8 @@ pyqt6 = "*"
 pillow = "*"
 numpy = "*"
 opencv-python = "*"
+scikit-learn = "*"
+pykeops = "*"
 
 [dev-packages]
 

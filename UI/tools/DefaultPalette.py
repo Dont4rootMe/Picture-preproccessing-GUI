@@ -40,11 +40,13 @@ class DefaultPalette(QWidget):
 
         image_rows = [QHBoxLayout(), QHBoxLayout()]
 
+        k = -1
         for i, rel_path in enumerate(sorted([*os.listdir('images/stock_images')])):
             if rel_path[0] == '.':
                 continue
+            k += 1
             path = os.path.join('images/stock_images', rel_path)
-            image_rows[i // 4].addWidget(SmartImageBox(self, engine, path))
+            image_rows[k // 4].addWidget(SmartImageBox(self, engine, path))
 
         layout.addItem(image_rows[0])
         image_rows[0].addStretch()

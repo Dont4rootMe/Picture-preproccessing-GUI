@@ -3,15 +3,17 @@ from PIL import Image, ImageEnhance, ImageQt
 import numpy as np
 import cv2 as cv
 
+from models import count_bounded_parts
+
 
 class Engine:
     def reset(self):
+        self.obj_count = None
         self.__whipe_dict()
         for upl in self.upload_actions:
             upl()
 
     def refresh(self):
-        print('refresh')
         for refr in self.refresh_actions:
             refr()
 
@@ -28,10 +30,12 @@ class Engine:
             'sharpness': False,
             'saturation': False,
             'color_enhancements': [1.0, 1.0, 1.0],
+            'binarize': None,
             'erosion': None,
             'dilation': None,
             'opening': None,
-            'closing': None
+            'closing': None,
+            'object_mask': None
         }
 
     def __init__(self):
@@ -40,7 +44,12 @@ class Engine:
         self.refresh_actions = []
         self.upload_actions = []
 
+        self.obj_count = None
+
         self.__whipe_dict()
+
+    def get_count(self):
+        return self.obj_count
 
     def on_change(self, func):
         self.refresh_actions.append(func)
@@ -72,6 +81,13 @@ class Engine:
         Matrix[..., 2] *= self.actions['color_enhancements'][2]
         temp = Image.fromarray(Matrix.astype(np.uint8))
 
+        if self.actions['binarize'] is not None:
+            Matrix = np.array(temp).astype(np.float32)
+            Matrix = cv.cvtColor(Matrix, cv.COLOR_BGR2GRAY)
+            ret, temp = cv.threshold(
+                Matrix, self.actions['binarize'], 255, cv.THRESH_BINARY)
+            temp = Image.fromarray(temp.astype(np.uint8))
+
         if self.actions['erosion'] is not None:
             Matrix = np.array(temp).astype(float)
             temp = cv.erode(Matrix, self.actions['erosion'], iterations=1)
@@ -94,6 +110,33 @@ class Engine:
                 Matrix, cv.MORPH_CLOSE, self.actions['closing'])
             temp = Image.fromarray(temp.astype(np.uint8))
 
+        if self.actions['object_mask'] is not None:
+            Matrix = np.array(temp).astype(float)
+            if self.actions['binarize'] is not None:
+                Matrix = np.stack([Matrix, Matrix, Matrix], axis=-1)
+
+            kernel = (10, 10)
+            for i in range(1, kernel[0] // 2 + 1):
+                for j in range(kernel[1] // 2):
+                    Matrix[np.maximum(self.actions['object_mask'][0] - i, 0),
+                           np.maximum(self.actions['object_mask'][1] - j, 0)] = np.array([255, 0, 0])
+
+                    Matrix[np.minimum(self.actions['object_mask'][0] + i, Matrix.shape[0] - 1),
+                           np.minimum(self.actions['object_mask'][1] + j, Matrix.shape[1] - 1)] = np.array([255, 0, 0])
+
+                    Matrix[np.maximum(self.actions['object_mask'][0] - i, 0),
+                           np.minimum(self.actions['object_mask'][1] + j, Matrix.shape[1] - 1)] = np.array([255, 0, 0])
+
+                    Matrix[np.minimum(self.actions['object_mask'][0] + i, Matrix.shape[0] - 1),
+                           np.maximum(self.actions['object_mask'][1] - j, 0)] = np.array([255, 0, 0])
+
+            Matrix[self.actions['object_mask'][0],
+                   self.actions['object_mask'][1]] = np.array([255, 0, 0])
+
+            temp = Image.fromarray(Matrix.astype(np.uint8))
+
+        self.actions['object_mask'] = None
+
         self.modified = temp
         return QPixmap.fromImage(ImageQt.ImageQt(temp))
 
@@ -102,6 +145,7 @@ class Engine:
         self.pixmap = QPixmap(path)
 
         self.reset()
+        self.actions['binarize'] = None
 
     def save_picture(self, path):
         self.modified.save(path)
@@ -168,3 +212,18 @@ class Engine:
             self.actions['closing'] = None
         kernel = np.ones(closing, np.uint8)
         self.actions['closing'] = kernel
+
+    @__refresher__
+    def binarize(self, bin):
+        if bin is None:
+            self.actions['binarize'] = None
+        self.actions['binarize'] = bin
+
+    @__refresher__
+    def find_componens(self, event):
+
+        if self.actions['binarize'] is None:
+            return None
+
+        mask = count_bounded_parts(self.modified)
+        self.obj_count, self.actions['object_mask'] = mask

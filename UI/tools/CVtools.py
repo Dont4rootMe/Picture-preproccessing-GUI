@@ -16,10 +16,10 @@ class CVtools(QWidget):
     class __erosion_tool(QWidget):
         def _no_style(self):
             self.btnNone.setStyleSheet(None)
+            self.btn22.setStyleSheet(None)
             self.btn33.setStyleSheet(None)
+            self.btn44.setStyleSheet(None)
             self.btn55.setStyleSheet(None)
-            self.btn77.setStyleSheet(None)
-            self.btn99.setStyleSheet(None)
 
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
@@ -34,21 +34,21 @@ class CVtools(QWidget):
             self.btnNone = QPushButton('нет')
             self.btnNone.clicked.connect(self.btnNone_click)
             self.btnNone.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.btn22 = QPushButton('2x2')
+            self.btn22.clicked.connect(self.btn22_click)
             self.btn33 = QPushButton('3x3')
             self.btn33.clicked.connect(self.btn33_click)
+            self.btn44 = QPushButton('4x4')
+            self.btn44.clicked.connect(self.btn44_click)
             self.btn55 = QPushButton('5x5')
             self.btn55.clicked.connect(self.btn55_click)
-            self.btn77 = QPushButton('9x9')
-            self.btn77.clicked.connect(self.btn77_click)
-            self.btn99 = QPushButton('15x15')
-            self.btn99.clicked.connect(self.btn99_click)
 
             layout = QHBoxLayout()
             layout.addWidget(self.btnNone)
+            layout.addWidget(self.btn22)
             layout.addWidget(self.btn33)
+            layout.addWidget(self.btn44)
             layout.addWidget(self.btn55)
-            layout.addWidget(self.btn77)
-            layout.addWidget(self.btn99)
 
             layout.setContentsMargins(0, 0, 0, 0)
             layout.setSpacing(0)
@@ -60,32 +60,32 @@ class CVtools(QWidget):
             self.engine.erosion_change(None)
 
         @__clear_styles
+        def btn22_click(self, event):
+            self.btn22.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.erosion_change((2, 2))
+
+        @__clear_styles
         def btn33_click(self, event):
             self.btn33.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.erosion_change((3, 3))
+
+        @__clear_styles
+        def btn44_click(self, event):
+            self.btn44.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.erosion_change((4, 4))
 
         @__clear_styles
         def btn55_click(self, event):
             self.btn55.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.erosion_change((5, 5))
 
-        @__clear_styles
-        def btn77_click(self, event):
-            self.btn77.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.erosion_change((9, 9))
-
-        @__clear_styles
-        def btn99_click(self, event):
-            self.btn99.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.erosion_change((15, 15))
-
     class __dilation_tool(QWidget):
         def _no_style(self):
             self.btnNone.setStyleSheet(None)
+            self.btn22.setStyleSheet(None)
             self.btn33.setStyleSheet(None)
+            self.btn44.setStyleSheet(None)
             self.btn55.setStyleSheet(None)
-            self.btn77.setStyleSheet(None)
-            self.btn99.setStyleSheet(None)
 
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
@@ -100,21 +100,21 @@ class CVtools(QWidget):
             self.btnNone = QPushButton('нет')
             self.btnNone.clicked.connect(self.btnNone_click)
             self.btnNone.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.btn22 = QPushButton('2x2')
+            self.btn22.clicked.connect(self.btn22_click)
             self.btn33 = QPushButton('3x3')
             self.btn33.clicked.connect(self.btn33_click)
+            self.btn44 = QPushButton('4x4')
+            self.btn44.clicked.connect(self.btn44_click)
             self.btn55 = QPushButton('5x5')
             self.btn55.clicked.connect(self.btn55_click)
-            self.btn77 = QPushButton('9x9')
-            self.btn77.clicked.connect(self.btn77_click)
-            self.btn99 = QPushButton('15x15')
-            self.btn99.clicked.connect(self.btn99_click)
 
             layout = QHBoxLayout()
             layout.addWidget(self.btnNone)
+            layout.addWidget(self.btn22)
             layout.addWidget(self.btn33)
+            layout.addWidget(self.btn44)
             layout.addWidget(self.btn55)
-            layout.addWidget(self.btn77)
-            layout.addWidget(self.btn99)
 
             layout.setContentsMargins(0, 0, 0, 0)
             layout.setSpacing(0)
@@ -126,24 +126,24 @@ class CVtools(QWidget):
             self.engine.dilation_change(None)
 
         @__clear_styles
+        def btn22_click(self, event):
+            self.btn22.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.dilation_change((2, 2))
+
+        @__clear_styles
         def btn33_click(self, event):
             self.btn33.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.dilation_change((3, 3))
 
         @__clear_styles
+        def btn44_click(self, event):
+            self.btn44.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.dilation_change((4, 4))
+
+        @__clear_styles
         def btn55_click(self, event):
             self.btn55.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.dilation_change((5, 5))
-
-        @__clear_styles
-        def btn77_click(self, event):
-            self.btn77.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.dilation_change((9, 9))
-
-        @__clear_styles
-        def btn99_click(self, event):
-            self.btn99.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.dilation_change((15, 15))
 
     class __action_button(QPushButton):
         def __init__(self, topModel, func):
@@ -165,10 +165,10 @@ class CVtools(QWidget):
     class __opening_tool(QWidget):
         def _no_style(self):
             self.btnNone.setStyleSheet(None)
+            self.btn22.setStyleSheet(None)
             self.btn33.setStyleSheet(None)
+            self.btn44.setStyleSheet(None)
             self.btn55.setStyleSheet(None)
-            self.btn77.setStyleSheet(None)
-            self.btn99.setStyleSheet(None)
 
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
@@ -183,21 +183,21 @@ class CVtools(QWidget):
             self.btnNone = QPushButton('нет')
             self.btnNone.clicked.connect(self.btnNone_click)
             self.btnNone.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.btn22 = QPushButton('2x2')
+            self.btn22.clicked.connect(self.btn22_click)
             self.btn33 = QPushButton('3x3')
             self.btn33.clicked.connect(self.btn33_click)
+            self.btn44 = QPushButton('4x4')
+            self.btn44.clicked.connect(self.btn44_click)
             self.btn55 = QPushButton('5x5')
             self.btn55.clicked.connect(self.btn55_click)
-            self.btn77 = QPushButton('9x9')
-            self.btn77.clicked.connect(self.btn77_click)
-            self.btn99 = QPushButton('15x15')
-            self.btn99.clicked.connect(self.btn99_click)
 
             layout = QHBoxLayout()
             layout.addWidget(self.btnNone)
+            layout.addWidget(self.btn22)
             layout.addWidget(self.btn33)
+            layout.addWidget(self.btn44)
             layout.addWidget(self.btn55)
-            layout.addWidget(self.btn77)
-            layout.addWidget(self.btn99)
 
             layout.setContentsMargins(0, 0, 0, 0)
             layout.setSpacing(0)
@@ -209,32 +209,32 @@ class CVtools(QWidget):
             self.engine.opening_change(None)
 
         @__clear_styles
+        def btn22_click(self, event):
+            self.btn22.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.opening_change((2, 2))
+
+        @__clear_styles
         def btn33_click(self, event):
             self.btn33.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.opening_change((3, 3))
+
+        @__clear_styles
+        def btn44_click(self, event):
+            self.btn44.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.opening_change((4, 4))
 
         @__clear_styles
         def btn55_click(self, event):
             self.btn55.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.opening_change((5, 5))
 
-        @__clear_styles
-        def btn77_click(self, event):
-            self.btn77.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.opening_change((9, 9))
-
-        @__clear_styles
-        def btn99_click(self, event):
-            self.btn99.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.opening_change((15, 15))
-
     class __closing_tool(QWidget):
         def _no_style(self):
             self.btnNone.setStyleSheet(None)
+            self.btn22.setStyleSheet(None)
             self.btn33.setStyleSheet(None)
+            self.btn44.setStyleSheet(None)
             self.btn55.setStyleSheet(None)
-            self.btn77.setStyleSheet(None)
-            self.btn99.setStyleSheet(None)
 
         def __clear_styles(func):
             def inner(self, *args, **kwargs):
@@ -249,21 +249,21 @@ class CVtools(QWidget):
             self.btnNone = QPushButton('нет')
             self.btnNone.clicked.connect(self.btnNone_click)
             self.btnNone.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.btn22 = QPushButton('2x2')
+            self.btn22.clicked.connect(self.btn22_click)
             self.btn33 = QPushButton('3x3')
             self.btn33.clicked.connect(self.btn33_click)
+            self.btn44 = QPushButton('4x4')
+            self.btn44.clicked.connect(self.btn44_click)
             self.btn55 = QPushButton('5x5')
             self.btn55.clicked.connect(self.btn55_click)
-            self.btn77 = QPushButton('9x9')
-            self.btn77.clicked.connect(self.btn77_click)
-            self.btn99 = QPushButton('15x15')
-            self.btn99.clicked.connect(self.btn99_click)
 
             layout = QHBoxLayout()
             layout.addWidget(self.btnNone)
+            layout.addWidget(self.btn22)
             layout.addWidget(self.btn33)
+            layout.addWidget(self.btn44)
             layout.addWidget(self.btn55)
-            layout.addWidget(self.btn77)
-            layout.addWidget(self.btn99)
 
             layout.setContentsMargins(0, 0, 0, 0)
             layout.setSpacing(0)
@@ -275,24 +275,24 @@ class CVtools(QWidget):
             self.engine.closing_change(None)
 
         @__clear_styles
+        def btn22_click(self, event):
+            self.btn22.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.closing_change((2, 2))
+
+        @__clear_styles
         def btn33_click(self, event):
             self.btn33.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.closing_change((3, 3))
 
         @__clear_styles
+        def btn44_click(self, event):
+            self.btn44.setStyleSheet(CLICKED_BUTTON_STYLE)
+            self.engine.closing_change((4, 4))
+
+        @__clear_styles
         def btn55_click(self, event):
             self.btn55.setStyleSheet(CLICKED_BUTTON_STYLE)
             self.engine.closing_change((5, 5))
-
-        @__clear_styles
-        def btn77_click(self, event):
-            self.btn77.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.closing_change((9, 9))
-
-        @__clear_styles
-        def btn99_click(self, event):
-            self.btn99.setStyleSheet(CLICKED_BUTTON_STYLE)
-            self.engine.closing_change((15, 15))
 
     def __init__(self, topModel, engine):
         super().__init__(topModel)
