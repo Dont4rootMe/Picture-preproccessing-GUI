@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFileDialog, QPushButton
-from PyQt6.QtGui import QDragEnterEvent, QPixmap
+from PyQt6.QtWidgets import QLabel, QFileDialog
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QSize
 
 

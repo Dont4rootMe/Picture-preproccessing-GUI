@@ -1,6 +1,4 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QCheckBox
-from PyQt6.QtCore import Qt
-from PyQt6.QtCore import QSize
 
 
 class CountObjects(QWidget):

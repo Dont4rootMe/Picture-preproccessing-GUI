@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QToolBox, QWidget, QHBoxLayout, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QToolBox, QWidget, QVBoxLayout
 
 from UI.tools.ColorDials import ColorDials
 from UI.tools.CVtools import CVtools

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QFormLayout, QButtonGroup, QPushButton, QHBoxLayout
+from PyQt6.QtWidgets import QWidget, QFormLayout, QPushButton, QHBoxLayout
 
 CLICKED_BUTTON_STYLE = '''
     background-color: #4e80ee;

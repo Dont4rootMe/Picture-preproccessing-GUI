@@ -1,4 +1,3 @@
-from sklearn.cluster import estimate_bandwidth
 import numpy as np
 from cv2 import connectedComponentsWithStats
 
