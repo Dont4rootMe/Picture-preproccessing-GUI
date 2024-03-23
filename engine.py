@@ -14,6 +14,8 @@ class Engine:
             upl()
 
     def refresh(self):
+        self.actions['object_mask'] = None
+        self.values = None
         for refr in self.refresh_actions:
             refr()
 
@@ -45,6 +47,7 @@ class Engine:
         self.upload_actions = []
 
         self.obj_count = None
+        self.min_clust_value = 0
 
         self.__whipe_dict()
 
@@ -115,27 +118,27 @@ class Engine:
             if self.actions['binarize'] is not None:
                 Matrix = np.stack([Matrix, Matrix, Matrix], axis=-1)
 
-            kernel = (10, 10)
-            for i in range(1, kernel[0] // 2 + 1):
+            indexes = self.values > self.min_clust_value
+
+            kernel = (8, 8)
+            for i in range(kernel[0] // 2):
                 for j in range(kernel[1] // 2):
-                    Matrix[np.maximum(self.actions['object_mask'][0] - i, 0),
-                           np.maximum(self.actions['object_mask'][1] - j, 0)] = np.array([255, 0, 0])
+                    Matrix[np.maximum(self.actions['object_mask'][0][indexes] - i, 0),
+                           np.maximum(self.actions['object_mask'][1][indexes] - j, 0)] = np.array([255, 0, 0])
 
-                    Matrix[np.minimum(self.actions['object_mask'][0] + i, Matrix.shape[0] - 1),
-                           np.minimum(self.actions['object_mask'][1] + j, Matrix.shape[1] - 1)] = np.array([255, 0, 0])
+                    Matrix[np.minimum(self.actions['object_mask'][0][indexes] + i, Matrix.shape[0] - 1),
+                           np.minimum(self.actions['object_mask'][1][indexes] + j, Matrix.shape[1] - 1)] = np.array([255, 0, 0])
 
-                    Matrix[np.maximum(self.actions['object_mask'][0] - i, 0),
-                           np.minimum(self.actions['object_mask'][1] + j, Matrix.shape[1] - 1)] = np.array([255, 0, 0])
+                    Matrix[np.maximum(self.actions['object_mask'][0][indexes] - i, 0),
+                           np.minimum(self.actions['object_mask'][1][indexes] + j, Matrix.shape[1] - 1)] = np.array([255, 0, 0])
 
-                    Matrix[np.minimum(self.actions['object_mask'][0] + i, Matrix.shape[0] - 1),
-                           np.maximum(self.actions['object_mask'][1] - j, 0)] = np.array([255, 0, 0])
+                    Matrix[np.minimum(self.actions['object_mask'][0][indexes] + i, Matrix.shape[0] - 1),
+                           np.maximum(self.actions['object_mask'][1][indexes] - j, 0)] = np.array([255, 0, 0])
 
-            Matrix[self.actions['object_mask'][0],
-                   self.actions['object_mask'][1]] = np.array([255, 0, 0])
+            Matrix[self.actions['object_mask'][0][indexes],
+                   self.actions['object_mask'][1][indexes]] = np.array([255, 0, 0])
 
             temp = Image.fromarray(Matrix.astype(np.uint8))
-
-        self.actions['object_mask'] = None
 
         self.modified = temp
         return QPixmap.fromImage(ImageQt.ImageQt(temp))
@@ -219,11 +222,24 @@ class Engine:
             self.actions['binarize'] = None
         self.actions['binarize'] = bin
 
-    @__refresher__
     def find_componens(self, event):
-
         if self.actions['binarize'] is None:
             return None
 
-        mask = count_bounded_parts(self.modified)
-        self.obj_count, self.actions['object_mask'] = mask
+        values, centroids = count_bounded_parts(self.modified)
+
+        self.values = values
+        self.actions['object_mask'] = centroids
+
+        self.obj_count = np.sum(self.values > self.min_clust_value)
+
+        for refr in self.refresh_actions:
+            refr()
+
+    def change_min_clustsize(self, s):
+        self.min_clust_value = s
+        self.obj_count = np.sum(
+            self.values > self.min_clust_value) if self.values is not None else None
+
+        for refr in self.refresh_actions:
+            refr()
